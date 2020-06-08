@@ -1122,12 +1122,12 @@ Lexer(lexer, atn, actionFuncs, sempredFuncs, superClass) ::= <<
 <namedActions.definitions>
 
 pub struct <lexer.name> {
-	base: <if(superClass)><superClass><else>BaseLexer\<<lexer.name>Actions><endif>,
+	base: <if(superClass)><superClass><else>BaseLexer<endif>\<<lexer.name>Actions>,
 //	static { RuntimeMetaData.checkVersion("<lexerFile.ANTLRVersion>", RuntimeMetaData.VERSION); }
 }
 
 impl Deref for <lexer.name>{
-	type Target = BaseLexer\<<lexer.name>Actions>;
+	type Target = <if(superClass)><superClass><else>BaseLexer<endif>\<<lexer.name>Actions>;
 
 	fn deref(&self) -> &Self::Target {
 		&self.base
@@ -1168,7 +1168,7 @@ impl <lexer.name> {
 	pub fn new (input: Box\<dyn CharStream>) -> Self {
 		antlr_rust::recognizer::check_version("0","1");
     	Self {
-			base: BaseLexer::new_base_lexer(
+			base: <if(superClass)><superClass><else>BaseLexer<endif>::new_base_lexer(
 				input,
 				LexerATNSimulator::new_lexer_atnsimulator(
 					_ATN.clone(),
@@ -1189,14 +1189,14 @@ impl <lexer.name>Actions{
 	<namedActions.members>
 }
 
-impl LexerRecog for <lexer.name>Actions{
+impl LexerRecog\<<if(superClass)><superClass><else>BaseLexer<endif>\<Self\>> for <lexer.name>Actions{
 	<namedActions.extend>
 }
 
 impl Recognizer for <lexer.name>Actions {}
 
 impl Actions for <lexer.name>Actions{
-	type Recog = BaseLexer\<<lexer.name>Actions>;
+	type Recog = <if(superClass)><superClass><else>BaseLexer<endif>\<<lexer.name>Actions>;
 	<dumpActions(lexer, "", actionFuncs, sempredFuncs)>
 }
 
